@@ -1,6 +1,6 @@
 # welcome_flutter
 
-A new Flutter project.
+新手入门Flutter练习.
 
 ## Getting Started
 
