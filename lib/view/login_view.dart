@@ -1,78 +1,7 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-
-class WelcomePage extends StatefulWidget {
-  const WelcomePage({Key? key}) : super(key: key);
-
-  @override
-  _WelcomePageState createState() => _WelcomePageState();
-}
-
-class _WelcomePageState extends State<WelcomePage> {
-  int countDownTime = 3;
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Stack(
-        fit: StackFit.expand,
-        children: [
-          Image(
-            image: AssetImage('assets/images/splash.jpg'),
-            fit: BoxFit.fill,
-          ),
-          GestureDetector(
-            child: Align(
-              alignment: Alignment(0.85, -0.90),
-              child: Text(
-                "$countDownTime 秒后跳过",
-                textAlign: TextAlign.right,
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: 16,
-                ),
-              ),
-            ),
-            onTap: () {
-              if (countDownTime != 0) return;
-              gotoLoginPage();
-            },
-          ),
-        ],
-      ),
-    );
-  }
-
-  @override
-  void initState() {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersive);
-    super.initState();
-    Timer.periodic(const Duration(seconds: 1), (timer) {
-      countDownTime--;
-      setState(() {});
-      if (countDownTime == 0) {
-        timer.cancel();
-        gotoLoginPage();
-      }
-    });
-  }
-
-  void gotoLoginPage() {
-    Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (BuildContext context) => const LoginPage()));
-  }
-
-  @override
-  void dispose() {
-    SystemChrome.setEnabledSystemUIMode(SystemUiMode.manual);
-    super.dispose();
-  }
-}
+import 'package:provider/provider.dart';
+import 'package:welcome_flutter/viewmodel/login_view_model.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -82,13 +11,25 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  TextEditingController _userController = new TextEditingController();
-  TextEditingController _passwordController = new TextEditingController();
+  late TextEditingController _userController;
+
+  late TextEditingController _passwordController;
+
+  late LoginViewModel _loginViewModel;
+
+  @override
+  void initState() {
+    _loginViewModel = context.read<LoginViewModel>();
+    _userController = new TextEditingController();
+    _passwordController = new TextEditingController();
+    super.initState();
+  }
 
   @override
   void dispose() {
     _userController.dispose();
     _passwordController.dispose();
+    _loginViewModel.dispose();
     super.dispose();
   }
 
@@ -162,9 +103,8 @@ class _LoginPageState extends State<LoginPage> {
                     style: TextStyle(color: Colors.white, fontSize: 16),
                   ),
                   onPressed: () {
-                    print(_userController.text);
-                    print(_passwordController.text);
-                    Fluttertoast.showToast(msg: "点击了登录按钮");
+                    _loginViewModel.login(
+                        _userController.text, _passwordController.text);
                   },
                 )
               ],
