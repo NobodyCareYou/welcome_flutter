@@ -1,21 +1,11 @@
-import 'dart:convert';
-
-import 'package:dio/dio.dart';
+import 'package:logger/logger.dart';
 import 'package:welcome_flutter/bean/user_info_entity.dart';
 import 'package:welcome_flutter/config/http_config.dart';
-import 'package:welcome_flutter/generated/json/user_info_entity_helper.dart';
-import 'package:welcome_flutter/global/dio_manager.dart';
+import 'package:welcome_flutter/global/dio/dio_manager.dart';
+import 'package:welcome_flutter/global/dio/dio_method.dart';
+import 'package:welcome_flutter/global/dio/dio_response.dart';
 
 void sendLoginRequest(String phone, String password) async {
-  Response result = await DioManager().businessDio.post(
-      service_path["login"].toString(),
-      data: {"Password": password, "Phone": phone});
-  print(result.toString());
-
-  Map<String, dynamic> a = json.decode(result.toString());
-  UserInfoEntity userInfo = UserInfoEntity();
-
-
-  userInfoEntityFromJson(userInfo, a);
-  print("result" + userInfo.retData.orgName.toString());
+  DioManager().request(LOGIN_URL,
+      method: DioMethod.POST, data: {"Password": password, "Phone": phone}).then((value) => print(value.toString()));
 }

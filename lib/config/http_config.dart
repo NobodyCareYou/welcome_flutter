@@ -1,4 +1,3 @@
 const base_url = "http://saas.business.qqinsoft.com";
-const service_path = {
-  "login": "/api/Person/Login",
-};
+
+const String LOGIN_URL = "/api/Person/Login";

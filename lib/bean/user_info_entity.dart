@@ -1,18 +1,10 @@
-import 'package:welcome_flutter/generated/json/base/json_convert_content.dart';
+import 'dart:convert';
 import 'package:welcome_flutter/generated/json/base/json_field.dart';
+import 'package:welcome_flutter/generated/json/user_info_entity.g.dart';
 
-class UserInfoEntity with JsonConvert<UserInfoEntity> {
-	@JSONField(name: "Code")
-	late int code;
-	@JSONField(name: "Msg")
-	late String msg;
-	@JSONField(name: "Exception")
-	dynamic exception;
-	@JSONField(name: "RetData")
-	late UserInfoRetData retData;
-}
+@JsonSerializable()
+class UserInfoEntity {
 
-class UserInfoRetData with JsonConvert<UserInfoRetData> {
 	@JSONField(name: "OrgId")
 	late String orgId;
 	@JSONField(name: "OrgName")
@@ -40,15 +32,15 @@ class UserInfoRetData with JsonConvert<UserInfoRetData> {
 	@JSONField(name: "IsTech")
 	late bool isTech;
 	@JSONField(name: "AuthList")
-	dynamic authList;
+	late dynamic authList;
 	@JSONField(name: "AuthCodeList")
 	late List<String> authCodeList;
 	@JSONField(name: "FreeMoney")
-	late int freeMoney;
+	late double freeMoney;
 	@JSONField(name: "DisCount")
-	late int disCount;
+	late double disCount;
 	@JSONField(name: "FavourableMoney")
-	late int favourableMoney;
+	late double favourableMoney;
 	@JSONField(name: "AllowUpClockChooseItem")
 	late bool allowUpClockChooseItem;
 	@JSONField(name: "IsChangeForLow")
@@ -60,13 +52,15 @@ class UserInfoRetData with JsonConvert<UserInfoRetData> {
 	@JSONField(name: "ReturnDuration")
 	late int returnDuration;
 	@JSONField(name: "ImgList")
-	late List<UserInfoRetDataImgList> imgList;
+	late List<UserInfoImgList> imgList;
 	@JSONField(name: "Token")
-	dynamic token;
+	late dynamic token;
 	@JSONField(name: "AllowOrgList")
-	late List<UserInfoRetDataAllowOrgList> allowOrgList;
+	late List<UserInfoAllowOrgList> allowOrgList;
 	@JSONField(name: "AppReportUrl")
 	late String appReportUrl;
+	@JSONField(name: "AppReportBusiUrl")
+	late String appReportBusiUrl;
 	@JSONField(name: "NettySocketUrl")
 	late String nettySocketUrl;
 	@JSONField(name: "AllowEditCardSettle")
@@ -85,20 +79,57 @@ class UserInfoRetData with JsonConvert<UserInfoRetData> {
 	late String key3;
 	@JSONField(name: "Key4")
 	late String key4;
+  
+  UserInfoEntity();
+
+  factory UserInfoEntity.fromJson(Map<String, dynamic> json) => $UserInfoEntityFromJson(json);
+
+  Map<String, dynamic> toJson() => $UserInfoEntityToJson(this);
+
+  @override
+  String toString() {
+    return jsonEncode(this);
+  }
 }
 
-class UserInfoRetDataImgList with JsonConvert<UserInfoRetDataImgList> {
+@JsonSerializable()
+class UserInfoImgList {
+
 	@JSONField(name: "ImgUrl")
 	late String imgUrl;
 	@JSONField(name: "ImgType")
 	late int imgType;
+  
+  UserInfoImgList();
+
+  factory UserInfoImgList.fromJson(Map<String, dynamic> json) => $UserInfoImgListFromJson(json);
+
+  Map<String, dynamic> toJson() => $UserInfoImgListToJson(this);
+
+  @override
+  String toString() {
+    return jsonEncode(this);
+  }
 }
 
-class UserInfoRetDataAllowOrgList with JsonConvert<UserInfoRetDataAllowOrgList> {
+@JsonSerializable()
+class UserInfoAllowOrgList {
+
 	@JSONField(name: "PersonId")
 	late String personId;
 	@JSONField(name: "OrgId")
 	late String orgId;
 	@JSONField(name: "OrgName")
 	late String orgName;
+  
+  UserInfoAllowOrgList();
+
+  factory UserInfoAllowOrgList.fromJson(Map<String, dynamic> json) => $UserInfoAllowOrgListFromJson(json);
+
+  Map<String, dynamic> toJson() => $UserInfoAllowOrgListToJson(this);
+
+  @override
+  String toString() {
+    return jsonEncode(this);
+  }
 }
