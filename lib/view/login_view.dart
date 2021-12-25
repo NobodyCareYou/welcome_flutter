@@ -20,8 +20,8 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     _loginViewModel = context.read<LoginViewModel>();
-    _userController = new TextEditingController();
-    _passwordController = new TextEditingController();
+    _userController = new TextEditingController(text: "17773896560");
+    _passwordController = new TextEditingController(text : "896560");
     super.initState();
   }
 

@@ -55,12 +55,12 @@ class DioManager {
     // openLog();
   }
 
-  Future<T> request<T>(
-    String path, {
+  Future<T> request<T>(String path, {
     DioMethod method = DioMethod.GET,
     Map<String, dynamic>? params,
     Options? options,
     data,
+    BuildContext? context,
     CancelToken? cancelToken,
     ProgressCallback? onSendProgress,
     ProgressCallback? onReceiveProgress,
@@ -73,7 +73,7 @@ class DioManager {
       DioMethod.PATCH: 'patch',
       DioMethod.HEAD: 'head'
     };
-    options ??= Options(method: _methodValues[method]);
+    options ??= Options(method: _methodValues[method],responseType: ResponseType.plain);
     try {
       Response response;
       response = await _dio.request(path,
@@ -84,11 +84,15 @@ class DioManager {
           onSendProgress: onSendProgress,
           onReceiveProgress: onReceiveProgress);
 
-      // Logger().e(response.data.toString());
-      // var a = UserInfoEntity.fromJson(response.data);
-      // Logger().e(a.phone);
-      // return jsonConvert.convert(response.data.toString()) as T;
-      return response.data;
+      var fromJsonAsT = JsonConvert.fromJsonAsT<T>(response.data);
+      if (fromJsonAsT == null) {
+        throw Exception("解析数据失败");
+      } else {
+        return fromJsonAsT;
+      }
+
+
+      // return response.data as T;
     } on DioError catch (e) {
       throw e;
     }

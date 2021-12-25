@@ -1,18 +1,20 @@
 import 'package:welcome_flutter/generated/json/base/json_convert_content.dart';
+import 'package:welcome_flutter/generated/json/base/json_field.dart';
 
-class DioResponse<T> {
+class DioResponse implements JsonSerializable{
   late int Code;
   late String Msg;
-  late dynamic RetData;
+  // late dynamic? RetData;
+  late Map<String,dynamic>? RetData;
 
   DioResponse(this.Code, this.Msg, this.RetData);
 
   bool get success => Code == 200;
 
-  @override
-  String toString() {
-    return 'DioResponse{RetData: $RetData, Code: $Code, Msg: $Msg}';
-  }
+  // @override
+  // String toString() {
+  //   return 'DioResponse{RetData: $RetData, Code: $Code, Msg: $Msg}';
+  // }
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = new Map<String, dynamic>();
@@ -28,9 +30,6 @@ class DioResponse<T> {
     RetData = json['RetData'];
   }
 
-   T getResults<T>() {
-    return jsonConvert.asT<T>(RetData) as T;
-  }
 }
 
 
